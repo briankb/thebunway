@@ -4,7 +4,8 @@
   "private": true,
   "scripts": {
     "dev": "bun './**/*.html'",
-    "build": "bun 'the_bun_way_landing_page.build.ts'"
+    "build": "bun 'the_bun_way_landing_page.build.ts'",
+    "start": "bun server.ts"
   },
   "dependencies": {
     "bun-plugin-tailwind": "^0.1.2",
