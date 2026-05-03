@@ -2,32 +2,14 @@
 
 This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
-## Commands
-
-```bash
-bun dev                                    # Start dev server with hot reload
-bun run the_bun_way_landing_page.build.ts  # Production build (outputs to dist/)
-```
-
-There is no test runner or linter configured.
-
 ## Architecture
 
-This is a single-page React landing page for [LearnBun.org](https://learnbun.org), promoting "The Bun Way" philosophy. The project deliberately avoids a `tsconfig.json`, `.eslintrc`, or separate bundler config — Bun handles all of that natively.
+This is a single static `index.html` file — no build step, no framework, no dependencies.
 
-**Key files:**
+Deployed via Coolify's **Static** build pack (Nginx serves the file directly from the repo root).
 
-- `the_bun_way_landing_page.jsx` — The main React component (the entire UI lives here)
-- `the_bun_way_landing_page.client.tsx` — React root entry point; includes `import.meta.hot` HMR support
-- `the_bun_way_landing_page.html` — HTML shell that loads the client entry
-- `the_bun_way_landing_page.css` — Tailwind CSS via `@import`
-- `the_bun_way_landing_page.build.ts` — Production build script using `Bun.build()` with `bun-plugin-tailwind`, minification, and source maps
-- `bunfig.toml` — Minimal Bun config that registers `bun-plugin-tailwind` for the dev server
+**Styling**: Tailwind CSS v4 loaded from the jsDelivr CDN (`@tailwindcss/browser@4`). All classes are standard Tailwind utilities; arbitrary values like `tracking-[0.2em]` and `rounded-[2rem]` work via the browser build.
 
-**Build flow:**
+**Analytics**: OpenPanel tracking via the standard snippet — init script sets `apiUrl` to `https://api.ops.eyespike.com` with `clientId: c48dfc92-ef83-439f-8d41-f57040897f62`, and the `op1.js` loader is pulled from `https://openpanel.dev/op1.js`.
 
-Dev: Bun's dev server serves the `.html` file and processes JSX/TSX and Tailwind CSS on the fly.
-
-Production: `the_bun_way_landing_page.build.ts` calls `Bun.build()` directly — no Vite, Webpack, or esbuild config needed — and writes minified output to `dist/`.
-
-**Stack:** React 19, Tailwind CSS 4, bun-plugin-tailwind. No routing, no state management, no backend.
+To edit the page: modify `index.html` directly and push. Coolify redeploys in seconds.
